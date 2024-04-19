@@ -6,7 +6,7 @@ function Header() {
       <nav>
         <ul>
           <li>
-            <NavLink to="/" className="link" exact>Home</NavLink>
+            <NavLink to="/" className="link">Home</NavLink>
           </li>
           <li>
             <NavLink to="about" className="link">About</NavLink>

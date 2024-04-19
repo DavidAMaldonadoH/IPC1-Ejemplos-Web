@@ -7,24 +7,25 @@ import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import User from './pages/User'
-
+import Customer from './pages/Customer'
+import Protected from './pages/Protected'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     children: [
-      { path: '/', element: <Home />},
+      { path: '/', element: <Home /> },
       { path: '/about', element: <About /> },
-      { path: '/contact', element: <Contact />},
-      { path: '/login', element: <Login />},
-      { path: '/register', element: <Register />},
-      { path: '/contacts/:id', element: <User />}
+      { path: '/contact', element: <Contact /> },
+      { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
+      { path: '/contacts/:id', element: <User /> },
+      { path: '/customers/:id', element: <Customer /> },
+      { path: '/protected', element: <Protected />}
     ]
   }
 ])
-
-
 
 function App() {
   return <RouterProvider router={router} />
