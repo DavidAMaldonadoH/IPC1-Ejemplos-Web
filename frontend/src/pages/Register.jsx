@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 export default function Register() {
   const [name, setName] = useState('')
@@ -12,12 +12,11 @@ export default function Register() {
     const data = {
       first_name: name,
       last_name: lastName,
-      email,
+      email: email,
       credit_card: creditCard,
       password
     }
     console.log(data)
-
     try {
       const response = await fetch('http://localhost:3000/addCustomer', {
         method: 'POST',
@@ -28,22 +27,20 @@ export default function Register() {
       })
       const result = await response.json()
       alert(result.message)
-      if (response.ok) {
-        setName('')
-        setLastName('')
-        setEmail('')
-        setCreditCard('')
-        setPassword('')
-      }
+      setName('')
+      setLastName('')
+      setEmail('')
+      setCreditCard('')
+      setPassword('')
     } catch (error) {
-
+      alert(error)
     }
   }
 
   return (
-    <main className="container" style={{ justifyContent: 'center' }}>
+    <div className="container" style={{ justifyContent: "center" }}>
       <h1>Register</h1>
-      <form className="register-form" action="POST" onSubmit={handleSubmit}>
+      <form className="register-form" action='POST' onSubmit={handleSubmit}>
         <div className="form-group-2">
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -52,8 +49,8 @@ export default function Register() {
               id="name"
               name="name"
               required
-              value={name}
               onChange={(e) => { setName(e.target.value) }}
+              value={name}
             />
           </div>
           <div className="form-group">
@@ -103,6 +100,6 @@ export default function Register() {
         </div>
         <button type="submit" className="light-button">Register</button>
       </form>
-    </main>
+    </div>
   )
 }

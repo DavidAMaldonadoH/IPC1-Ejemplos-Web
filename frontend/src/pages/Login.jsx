@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { mapDispatchToProps } from "../stores/userStore";
 
-export default function Login() {
+function Login(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -13,7 +15,6 @@ export default function Login() {
       password
     }
     try {
-
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
@@ -22,7 +23,8 @@ export default function Login() {
         body: JSON.stringify(data)
       })
       const result = await response.json()
-      if (response.ok) {
+      if (result) {
+        props.login(result)
         localStorage.setItem('user', JSON.stringify(result))
         navigate('/protected')
       } else {
@@ -66,3 +68,5 @@ export default function Login() {
     </div>
   )
 }
+
+export default connect(null, mapDispatchToProps)(Login);

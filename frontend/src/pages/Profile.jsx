@@ -1,29 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { connect } from "react-redux"
+import { useNavigate } from "react-router-dom";
+import { mapDispatchToProps, mapStateToProps } from "../stores/userStore";
 
-function Customer() {
-  const { id } = useParams();
-  const [name, setName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [creditCard, setCreditCard] = useState('')
-  const [password, setPassword] = useState('')
-
-
-  const getUser = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/getCustomer/${id}`);
-      const data = await response.json();
-      setName(data.first_name)
-      setLastName(data.last_name)
-      setEmail(data.email)
-      setCreditCard(data.credit_card)
-      setPassword(data.password)
-    } catch (error) {
-      alert('Error fetching user');
-      console.error(error);
-    }
-  };
+function Profile(props) {
+  const [name, setName] = useState(props.user.first_name)
+  const [lastName, setLastName] = useState(props.user.last_name)
+  const [email, setEmail] = useState(props.user.email)
+  const [creditCard, setCreditCard] = useState(props.user.credit_card)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,12 +37,13 @@ function Customer() {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    if (!props.user) {
+      navigate('/')
+    }
+  }, [])
 
-  return (
-    <div className='container' style={{ justifyContent: 'center' }}>
-      <h1>Cliente No. {id}</h1>
+  return (<div className='container' style={{ justifyContent: 'center' }}>
+      <h1>Mi Perfil</h1>
       <form className="register-form" action='PUT' onSubmit={handleSubmit}>
         <div className="form-group-2">
           <div className="form-group">
@@ -107,9 +93,8 @@ function Customer() {
         </div>
         <button type="submit" className="light-button">Actualizar</button>
       </form>
-
     </div>
-  );
+  )
 }
 
-export default Customer;
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getCustomer, addCustomer, getCustomers, updateCustomer, deleteCustomer, login } from '../services/services';
+import { getCustomer, addCustomer, getCustomers, updateCustomer, deleteCustomer, login, convertCustomerDataToCSV, groupCreditCardsByLength } from '../services/services';
 import { CustomerData, CustomerEntry } from '../types';
 
 const router = express.Router();
@@ -29,7 +29,7 @@ router.get('/getCustomer/:id', (req, res) => {
 router.post('/addCustomer', (req, res) => {
     const newCustomer: CustomerEntry = req.body;
     addCustomer(newCustomer);
-    res.send({message: 'Se agrego el cliente correctamente'});
+    res.send({ message: 'Se agrego el cliente correctamente' });
 });
 
 router.post('/addCustomers', (req, res) => {
@@ -64,10 +64,20 @@ router.post('/login', (req, res) => {
     const { email, password } = req.body;
     const customer = login(email, password);
     if (!customer) {
-        res.status(404).send({message: 'Credenciales Incorrectas!'})
+        res.status(404).send({ message: 'Credenciales Incorrectas!' })
+        return
     }
     res.send(customer)
 })
 
+router.get('/saveCustomersToCsv', (req, res) => {
+    const csv = convertCustomerDataToCSV();
+    res.status(200).send({ "content": csv });
+})
+
+router.get('/reports', (req, res) => {
+    const content = groupCreditCardsByLength();
+    res.status(200).send(content)
+})
 
 export default router;
